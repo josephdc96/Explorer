@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>Explorer</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x86;x64;arm64</Platforms>
+    <RuntimeIdentifiers>win10-x86;win10-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="ExplorerPage\ExplorerPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Common" Version="7.0.2" />
+    <PackageReference Include="CommunityToolkit.WinUI" Version="7.0.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.0.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.0.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Core" Version="7.0.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Layout" Version="7.0.2" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+    <PackageReference Include="Microsoft.ProjectReunion" Version="0.8.0-preview" />
+    <PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.0-preview" />
+    <PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0-preview" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Downloads\IconPack_Src\IconPackSln\IconPack\IconPack.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ExplorerPage\ExplorerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>

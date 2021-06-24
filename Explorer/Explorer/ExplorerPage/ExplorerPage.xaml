@@ -1,0 +1,145 @@
+﻿<UserControl
+    x:Class="Explorer.ExplorerPage.ExplorerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Explorer.ExplorerPage"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="CommunityToolkit.WinUI.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="ContactListViewTemplate" x:DataType="local:FileDetails">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="{x:Bind Icon}"
+                    Width ="16"
+                    Height="16"
+                    Margin="6"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="1"
+                    Text="{x:Bind Name}"
+                    x:Phase="1"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Margin="12,6,0,0"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <CommandBar Grid.Row="0" DefaultLabelPosition="Right" Background="Transparent">
+            <CommandBar.Content>
+                <MenuBar x:Name="MenuBar" Height="40">
+                    <MenuBar.Items>
+                        <MenuBarItem Title="File"/>
+                        <MenuBarItem Title="Edit"/>
+                        <MenuBarItem Title="View"/>
+                        <MenuBarItem Title="Tools"/>
+                    </MenuBar.Items>
+                </MenuBar>
+            </CommandBar.Content>
+            <AppBarButton x:Name="Organize" Label="Organize">
+                <AppBarButton.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                        <MenuFlyoutItem Text="Hello"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton x:Name="Open" Content="Open">
+                <AppBarButton.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                        <MenuFlyoutItem Text="Hello" Click="MenuFlyoutItem_Click"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton x:Name="GiveAccessTo" Content="Give access to">
+                <AppBarButton.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                        <MenuFlyoutItem Text="Hello"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton x:Name="Email" Label="Email"/>
+            <AppBarButton x:Name="NewFolder" Label="New Folder"/>
+            <AppBarSeparator/>
+            <AppBarButton x:Name="Style" ToolTipService.ToolTip="Change your view" Icon="List" LabelPosition="Collapsed"/>
+            <AppBarButton x:Name="Help" Icon="Help" LabelPosition="Collapsed"/>
+        </CommandBar>
+        <SplitView Grid.Row="1" x:Name="splitView" PaneBackground="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}"
+                   IsPaneOpen="True" OpenPaneLength="256" CompactPaneLength="48" DisplayMode="Inline">
+            <SplitView.Pane>
+                <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollMode="Enabled">
+                    <Expander VerticalAlignment="Top" HorizontalContentAlignment="Stretch" IsExpanded="True" ExpandDirection="Down">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="QuickAccessImg" Height="20" Width="20" Margin="4, 0"/>
+                                <TextBlock Text="Quick access"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <muxc:TreeView x:Name="QuickAccess" CanDragItems="False" AllowDrop="False"/>
+                    </Expander>
+                    <Expander VerticalAlignment="Top" HorizontalContentAlignment="Stretch" IsExpanded="False" ExpandDirection="Down">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="OneDriveImg" Height="20" Width="20" Margin="4, 0"/>
+                                <TextBlock Text="OneDrive"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <muxc:TreeView x:Name="OneDrive" CanDragItems="False" AllowDrop="False"/>
+                    </Expander>
+                    <Expander VerticalAlignment="Top" HorizontalContentAlignment="Stretch" IsExpanded="False" ExpandDirection="Down">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="ThisPCImg" Height="20" Width="20" Margin="4, 0"/>
+                                <TextBlock Text="This PC"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <muxc:TreeView x:Name="ThisPC" CanDragItems="False" AllowDrop="False"
+                                   ItemsSource="{x:Bind MyPCDataSource}" Expanding="ThisPC_Expanding" 
+                                       Collapsed="ThisPC_Collapsed" ScrollViewer.VerticalScrollMode="Enabled"
+                                       SelectionChanged="ThisPC_SelectionChanged">
+                            <muxc:TreeView.ItemTemplate>
+                                <DataTemplate x:DataType="local:TreeDir">
+                                    <muxc:TreeViewItem ItemsSource="{x:Bind Children}" IsExpanded="{x:Bind IsExpanded}">
+                                        <muxc:TreeViewItem.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{Binding Image}" Height="20" Width="20"/>
+                                                <TextBlock Margin="0, 0, 10, 0"/>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </StackPanel>
+                                        </muxc:TreeViewItem.Content>
+                                    </muxc:TreeViewItem>
+                                </DataTemplate>
+                            </muxc:TreeView.ItemTemplate>
+                        </muxc:TreeView>
+                    </Expander>
+                    <Expander VerticalAlignment="Top" HorizontalContentAlignment="Stretch" IsExpanded="False" ExpandDirection="Down">
+                        <Expander.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="NetworkImg" Height="20" Width="20" Margin="4, 0"/>
+                                <TextBlock Text="Network"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <muxc:TreeView x:Name="Network" CanDragItems="False" AllowDrop="False"/>
+                    </Expander>
+                </StackPanel>
+            </SplitView.Pane>
+
+            <Grid>
+                <ListView x:Name="fileListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                          SelectionMode="Extended" ItemsSource="{x:Bind CurrentDir}" 
+                          ItemTemplate="{StaticResource ContactListViewTemplate}"
+                          DoubleTapped="fileListView_DoubleTapped" RightTapped="fileListView_RightTapped"/>
+            </Grid>
+        </SplitView>
+    </Grid>
+</UserControl>
